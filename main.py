@@ -2,6 +2,10 @@ import cv2
 import mediapipe as mp
 import time
 from tkinter import *
+import math
+
+def dist(a, b):
+    return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 tk = Tk()
 tk.title = "Program"
@@ -57,70 +61,65 @@ def main():
                 i = 0
                 reye_l = (0, 0)
                 reye_u = (0, 0)
+                reye_1 = (0, 0)
+                reye_2 = (0, 0)
                 leye_l = (0, 0)
                 leye_u = (0, 0)
+                leye_1 = (0, 0)
+                leye_2 = (0, 0)
                 mout_l = (0, 0)
                 mout_u = (0, 0)
+                mout_1 = (0, 0)
+                mout_2 = (0, 0)
                 for p in landmarks:
                     i += 1
                     x = int(p.x * frame.shape[1])
                     y = int(p.y * frame.shape[0])
-                    if(i == 161):
-                        reye_u = (x, y)
+                    z = int(p.z)
+                    if(i == 160):
+                        leye_u = (x, y)
                     if(i == 146):
                         leye_l = (x, y)
                     if(i == 387):
-                        leye_u = (x, y)
-                    if(i == 374):
+                        reye_u = (x, y)
+                    if(i == 375):
                         reye_l = (x, y)
+                    if(i == 34):
+                        leye_1 = (x, y)
+                    if(i == 134):
+                        leye_2 = (x, y)
+                    if(i == 264):
+                        reye_1 = (x, y)
+                    if(i == 363):
+                        reye_2 = (x, y)
                     if(i == 82):
                         mout_u = (x, y)
-                    if(i == 88):
+                    if(i == 22):
                         mout_l = (x, y)
+                    if(i == 58):
+                        mout_1 = (x, y)
+                    if(i == 288):
+                        mout_2 = (x, y)
                     cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
-                dr = abs(reye_u[1] - reye_l[1])+1
-                dl = abs(leye_u[1] - leye_l[1])+1
-                dm = abs(mout_u[1] - mout_l[1])+1
-                print(dl, dr, okpressed)
+                dr = dist(leye_l, leye_u) / dist(leye_1, leye_2)
+                dl = dist(reye_l, reye_u) / dist(reye_1, reye_2)
+                dm = dist(mout_l, mout_u) / dist(mout_1, mout_2)
+                print(dl, dr, dm)
                 t = ""
-                if fohfr > 200:
-                    if abs(dr-calcl) > call-calcl:
+                if fohfr > 0:
+                    if dl < .18:
                         t += "L- " 
                     else:
                         t += "LO "
-                    if abs(dr-calcr) > calr-calcr:
+                    if dr < .18:
                         t += "R- "
                     else:
                         t += "RO "
-                    if 1/dm > 1/calm :
+                    if dm < 1:
                         t += "M- "
                     else:
                         t += "MO "
-                if(fohfr < 100):
-                    te.set(f"Keep both eyes open and mouth closed. Stay in a fixed, comfortable position. Press OK to start. Calibrating for {str(fohfr)}/100 frames... Values: " + str(calr) + " " + str(call) + " " + str(calm))
-                    calr = round((calr+dr)/2)
-                    call = round((call+dl)/2)
-                    calm = round((calm+dm)/2)
-                    if okpressed:
-                        fohfr += 1
-                elif fohfr == 100:
-                    tk.bell()
-                    okpressed = False
-                    calr -= 0
-                    call -= 0
-                    calm += 2
-                    calr = calr
-                    call = call
-                    calm = calm
-                    fohfr += 1
-                elif fohfr < 201:
-                    te.set(f"Keep both eyes closed. Stay in a fixed, comfortable position. Press OK to start. Calibrating for {str(fohfr)}/201 frames... Values: " + str(calcr) + " " + str(calcl) + " " + str(calom))
-                    calcr = round((calr+dr)/2)
-                    calcl = round((call+dl)/2)
-                    calom = round((calm+dm)/2)
-                    if okpressed:
-                        fohfr += 1
-                elif fohfr == 201:
+                if fohfr == 0:
                     okbt.destroy()
                     okpressed = False
                     tk.bell()
