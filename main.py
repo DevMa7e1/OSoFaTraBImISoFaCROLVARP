@@ -75,7 +75,6 @@ def main():
                     i += 1
                     x = int(p.x * frame.shape[1])
                     y = int(p.y * frame.shape[0])
-                    z = int(p.z)
                     if(i == 160):
                         leye_u = (x, y)
                     if(i == 146):
@@ -92,34 +91,47 @@ def main():
                         reye_1 = (x, y)
                     if(i == 363):
                         reye_2 = (x, y)
-                    if(i == 82):
+                    if(i == 14):
                         mout_u = (x, y)
-                    if(i == 22):
+                    if(i == 15):
                         mout_l = (x, y)
-                    if(i == 58):
-                        mout_1 = (x, y)
-                    if(i == 288):
-                        mout_2 = (x, y)
                     cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
                 dr = dist(leye_l, leye_u) / dist(leye_1, leye_2)
                 dl = dist(reye_l, reye_u) / dist(reye_1, reye_2)
-                dm = dist(mout_l, mout_u) / dist(mout_1, mout_2)
+                dm = abs(mout_l[1]-mout_u[1])
                 print(dl, dr, dm)
                 t = ""
-                if fohfr > 0:
-                    if dl < .18:
+                if fohfr > 21:
+                    if abs(call - dl) > abs(calcl - dl):
                         t += "L- " 
                     else:
                         t += "LO "
-                    if dr < .18:
+                    if abs(calr - dr) > abs(calcr - dr):
                         t += "R- "
                     else:
                         t += "RO "
-                    if dm < 1:
+                    if abs(calm - dm) < 10:
                         t += "M- "
                     else:
                         t += "MO "
-                if fohfr == 0:
+                if fohfr < 10:
+                  te.set(f"Calibration is required. Stay in a relatively fixed position with your eyes open and your mouth closed. Press OK to start.\nCalibrating for {fohfr}/10 frames.")
+                  calr = (calr+dr)/2
+                  call = (call+dl)/2
+                  calm = (calm+dm)/2
+                  if okpressed:
+                      fohfr += 1
+                elif fohfr == 10:
+                    okpressed = False
+                    tk.bell()
+                    fohfr += 1
+                elif fohfr < 21:
+                    te.set(f"This is the second step of calibration. Stay in a relatively fixed position with your eyes closed. Press OK to continue.\nCalibrating for {fohfr-1}/20 frames.")
+                    calcr = (calr+dr)/2
+                    calcl = (call+dl)/2
+                    if okpressed:
+                      fohfr += 1
+                elif fohfr == 21:
                     okbt.destroy()
                     okpressed = False
                     tk.bell()
