@@ -161,3 +161,8 @@ cython_debug/
 
 #Model stuff
 *.task
+#Program specific files
+*.png
+.cal
+config.txt
+main

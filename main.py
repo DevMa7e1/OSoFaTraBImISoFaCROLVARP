@@ -2,7 +2,11 @@ import cv2
 import mediapipe as mp
 import time
 from tkinter import *
+from PIL import ImageTk, Image
 import math
+import os
+import numpy
+import pyvirtualcam
 
 def dist(a, b):
     return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
@@ -30,20 +34,39 @@ def okcmd():
 
 def main():
     global okpressed, okbt, okcmd
-    cap = cv2.VideoCapture(0)
+    vindex = 0
+    im = Image.open("ccc.png")
+    if(not os.path.exists("config.txt")):
+        f = open("config.txt", 'w')
+        f.write("stream: 0")
+    else:
+        f = open("config.txt")
+        r = f.read().split("\n")
+        opt = {}
+        for i in r:
+            opt[i.split(":")[0]] = i.split(":")[1].removeprefix(" ")
+        vindex = int(opt["stream"])
+        if "bg" in opt:
+            background = Image.open(opt["bg"])
+        else:
+            background = Image.new('RGBA', im.size, (255,255,255))
+    cam = pyvirtualcam.Camera(width=im.width, height=im.height, fps=30)
+    cap = cv2.VideoCapture(vindex)
     te = StringVar()
     te.set("")
     text = Label(tk, textvariable=te)
     text.pack()
     okbt = Button(tk, text="OK", command=okcmd)
     okbt.pack()
+    img = ImageTk.PhotoImage(im)
+    imgl = Label(tk, image=img)
     fohfr = 0
     calr = 0
     calcr = 0
     call = 0
     calcl = 0
     calm = 0
-    calom = 0
+    fromfile = False
     with FaceLandmarker.create_from_options(options) as landmarker:
         while True:
             ret, frame = cap.read()
@@ -69,8 +92,6 @@ def main():
                 leye_2 = (0, 0)
                 mout_l = (0, 0)
                 mout_u = (0, 0)
-                mout_1 = (0, 0)
-                mout_2 = (0, 0)
                 for p in landmarks:
                     i += 1
                     x = int(p.x * frame.shape[1])
@@ -99,7 +120,6 @@ def main():
                 dr = dist(leye_l, leye_u) / dist(leye_1, leye_2)
                 dl = dist(reye_l, reye_u) / dist(reye_1, reye_2)
                 dm = abs(mout_l[1]-mout_u[1])
-                print(dl, dr, dm)
                 t = ""
                 if fohfr > 21:
                     if abs(call - dl) > abs(calcl - dl):
@@ -110,11 +130,21 @@ def main():
                         t += "R- "
                     else:
                         t += "RO "
-                    if abs(calm - dm) < 10:
+                    if abs(calm - dm) < 6:
                         t += "M- "
                     else:
                         t += "MO "
                 if fohfr < 10:
+                  if os.path.exists(".cal"):
+                      f = open(".cal")
+                      rs = f.read().split(',')
+                      call = float(rs[0])
+                      calcl = float(rs[1])
+                      calr = float(rs[2])
+                      calcr = float(rs[3])
+                      calm = float(rs[4])
+                      fromfile = True
+                      fohfr = 21
                   te.set(f"Calibration is required. Stay in a relatively fixed position with your eyes open and your mouth closed. Press OK to start.\nCalibrating for {fohfr}/10 frames.")
                   calr = (calr+dr)/2
                   call = (call+dl)/2
@@ -133,11 +163,33 @@ def main():
                       fohfr += 1
                 elif fohfr == 21:
                     okbt.destroy()
+                    imgl.pack()
                     okpressed = False
                     tk.bell()
                     fohfr += 1
+                    text.destroy()
+                    if not fromfile:
+                        f = open(".cal", 'w')
+                        f.write(f"{str(call)},{str(calcl)},{str(calr)},{str(calcr)},{str(calm)}")
+                        f.close()
                 else:
-                    te.set(t + f" L: {call},{calcl} R: {calr},{calcr} M: {calm}")
+                    name = ""
+                    if abs(call - dl) > abs(calcl - dl):
+                        name += "c"
+                    else:
+                        name += "o"
+                    if abs(calr - dr) > abs(calcr - dr):
+                        name += "c"
+                    else:
+                        name += "o"
+                    if abs(calm - dm) < 10:
+                        name += "c.png"
+                    else:
+                        name += "o.png"
+                    im = Image.alpha_composite(background, Image.open(name))
+                    img = ImageTk.PhotoImage(im)
+                    cam.send(numpy.asarray(im)[:, :, :3])
+                    imgl.config(image=img)
             cv2.imshow("Face Landmarks", frame)
             if cv2.waitKey(1) & 0xFF == 27:
                 break
