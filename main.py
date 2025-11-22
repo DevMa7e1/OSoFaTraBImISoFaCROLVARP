@@ -2,9 +2,11 @@ import cv2
 import mediapipe as mp
 import time
 from tkinter import *
+from tkinter import messagebox 
 from PIL import ImageTk, Image
 import math
 import os
+import sys
 import numpy
 import pyvirtualcam
 
@@ -34,6 +36,9 @@ def okcmd():
 
 def main():
     global okpressed, okbt, okcmd
+    if(not os.path.exists("face_landmarker.task")):
+        messagebox.showerror("OSoFaTraBImISoFaCROLVARP fatal error", "face_landmarker.task hasn't been found in the current directory. Please make sure that you have a copy of face_landmarker.task in the current directory and that you're running this from the correct folder.", icon='error')
+        quit(1)
     vindex = 0
     im = Image.open("ccc.png")
     if(not os.path.exists("config.txt")):
@@ -50,7 +55,14 @@ def main():
             background = Image.open(opt["bg"])
         else:
             background = Image.new('RGBA', im.size, (255,255,255))
-    cam = pyvirtualcam.Camera(width=im.width, height=im.height, fps=30)
+    try:
+        cam = pyvirtualcam.Camera(width=im.width, height=im.height, fps=30)
+    except:
+        if 'linux' in sys.platform:
+            messagebox.showerror("OSoFaTraBImISoFaCROLVARP fatal error", "Pyvirtualcam failed to initialize. Do you have v4l2loopback installed and loaded?", icon='error')
+        else:
+            messagebox.showerror("OSoFaTraBImISoFaCROLVARP fatal error", "Pyvirtualcam failed to initialize. Did you install OBS?", icon='error')
+        quit(1)
     cap = cv2.VideoCapture(vindex)
     te = StringVar()
     te.set("")
