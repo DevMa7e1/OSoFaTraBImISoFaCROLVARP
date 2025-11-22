@@ -39,6 +39,10 @@ def main():
     if(not os.path.exists("face_landmarker.task")):
         messagebox.showerror("OSoFaTraBImISoFaCROLVARP fatal error", "face_landmarker.task hasn't been found in the current directory. Please make sure that you have a copy of face_landmarker.task in the current directory and that you're running this from the correct folder.", icon='error')
         quit(1)
+    for i in ['ooo.png', 'coo.png', 'oco.png', 'ooc.png', 'coc.png', 'occ.png', 'cco.png', 'ccc.png']:
+        if(not os.path.exists(i)):
+            messagebox.showerror("OSoFaTraBImISoFaCROLVARP fatal error", "One or more of the 8 images required haven't been found in the current directory. Please make sure that you have them in the current directory and that you're running this from the correct folder.", icon='error')
+            quit(1)
     vindex = 0
     im = Image.open("ccc.png")
     if(not os.path.exists("config.txt")):
