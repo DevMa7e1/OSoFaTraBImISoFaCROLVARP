@@ -68,12 +68,12 @@ Delete the .cal file located in the executable's directory and redo calibration.
 ### Linux
 Make sure that you have installed python3-pip, python3-tk, pyinstaller and all the libraries from requirements.txt.
 
-To make the binary, clone this repo and, in the resulting directory, run the command `python -m pyinstaller main.py -F --hidden-import='PIL._tkinter_finder'`.
+To make the binary, clone this repo and, in the resulting directory, run the command `pyinstaller main.py -F --hidden-import='PIL._tkinter_finder'`.
 
 You can find the finished file in ./dist with the name main.
 ### Windows
 Make sure that you have installed Python and pyinstaller.
 
-To make the binary, clone this repo and, in the resulting directory, run the command `python -m pyinstaller main.py -F`.
+To make the binary, clone this repo and, in the resulting directory, run the command `pyinstaller main.py -F`.
 
 The resulting exe can be found in the dist folder.
