@@ -18,12 +18,15 @@ With the help of the pyvirtualcam library, this software can act as a virtual ca
 If the eight PNG images have transparency, you can add a background. It has to have the same resolution as the eight images and be a PNG.
 
 To enable this function, edit the config.txt file and add the line `bg: path/to/background.png`. Replace path/to/background.png with the path to your image. Animated backgrounds are not yet supported.
+## If you want to try out this software...
+You can use the example images provided in the example_images.zip file. Just unzip the file and copy the contents along side the binary.
 
+The images are of an original character created by my friend, who also drew the images.
 ## How to setup and install
 ### Linux
 Before you begin, you are going to need:
 #### Software:
-* A copy of the binary version of OSoFaTraBImISoFaCROLVARP
+* A copy of the binary version of OSoFaTraBImISoFaCROLVARP (you can get it from Releases)
 * A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
 * The eight PNG images with the same resolution
 * v4l2loopback installed and loaded (run `sudo modprobe v4l2loopback`)
@@ -37,7 +40,7 @@ Now, all you're going to need to do is run the binary and calibrate the software
 ### Windows
 Before you begin, you're going to need:
 #### Software
-* A copy of the binary EXE version of OSoFaTraBImISoFaCROLVARP
+* A copy of the binary EXE version of OSoFaTraBImISoFaCROLVARP (you can get it from Releases)
 * A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
 * The eight PNG images with the same resolution
 * A copy of OBS installed
