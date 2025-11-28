@@ -26,7 +26,7 @@ The images are of an original character created by my friend, who also drew the 
 ### Linux
 Before you begin, you are going to need:
 #### Software:
-* A copy of the binary version of OSoFaTraBImISoFaCROLVARP (you can get it from Releases)
+* A copy of the AppImage version of OSoFaTraBImISoFaCROLVARP (you can get it from Releases)
 * A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
 * The eight PNG images with the same resolution
 * v4l2loopback installed and loaded (run `sudo modprobe v4l2loopback`)
@@ -34,9 +34,9 @@ Before you begin, you are going to need:
 * Computer
 * Webcam (If you don't have one, you can connect your phone and use it as a camera using something like DroidCam)
 
-Make sure all files are in the same directory. If necessary, chmod the OSoFaTraBImISoFaCROLVARP binary.
+Make sure all files are in the same directory. If necessary, chmod the OSoFaTraBImISoFaCROLVARP AppImage.
 
-Now, all you're going to need to do is run the binary and calibrate the software. Calibration usually takes less than a minute and only has to be done once.
+Now, all you're going to need to do is execute the AppImage file and calibrate the software. Calibration usually takes less than a minute and only has to be done once.
 ### Windows
 Before you begin, you're going to need:
 #### Software
@@ -51,7 +51,26 @@ Before you begin, you're going to need:
 Make sure that the exe file is in the same folder as the images and as face_landmarker.task. Open the properties of the exe file and unblock it. Run the exe file and do the calibration procedure, which should last less than a minute and only has to be done once.
 
 If you want to make a shortcut to the OSoFaTraBImISoFaCLORVARP binary, make sure to also add the program direcory's path into the Start in textbox.
+### MacOS
+Before you begin, you are going to need:
+#### Software:
+* A copy of the pkg version of OSoFaTraBImISoFaCROLVARP for your architecture (x86_64 or ARM) (you can get it from Releases)
+* A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
+* The eight PNG images with the same resolution
+* OBS installed
+#### Hardware:
+* Computer
+* Webcam
 
+### First setup:
+1. Install the package
+2. Make a new folder on the Desktop
+3. Put the eight PNG images and the face_landmarker.task file inside
+4. Open the Terminal
+5. Navigate to your folder
+6. Open OSoFaTraBImISoFaCROLVARP by typing its name into the terminal
+
+Now, all you're going to need to do is execute the AppImage file and calibrate the software. Calibration usually takes less than a minute and only has to be done once.
 ## Different problems that might arise and how to fix them
 ### Program closes quickly before being opened
 The most common cause is that no camera is plugged in, recognized, or matches the stream index
