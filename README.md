@@ -43,7 +43,7 @@ Before you begin, you're going to need:
 * A copy of the binary EXE version of OSoFaTraBImISoFaCROLVARP (you can get it from Releases)
 * A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
 * The eight PNG images with the same resolution
-* A copy of OBS installed
+* A copy of OBS installed and fully configured
 #### Hardware:
 * Computer
 * Webcam (If you don't have one, you can connect your phone and use it as a camera using something like DroidCam)
@@ -52,25 +52,29 @@ Make sure that the exe file is in the same folder as the images and as face_land
 
 If you want to make a shortcut to the OSoFaTraBImISoFaCLORVARP binary, make sure to also add the program direcory's path into the Start in textbox.
 ### MacOS
+Be warned, this software was never fully tested on MacOS. Unknown problems might arrise. Proceed on MacOS at your own risk.
+
 Before you begin, you are going to need:
 #### Software:
 * A copy of the pkg version of OSoFaTraBImISoFaCROLVARP for your architecture (x86_64 or ARM) (you can get it from Releases)
 * A copy of face_landmarker.task from Google (you can get it [here](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task))
 * The eight PNG images with the same resolution
-* OBS installed
+* A copy of OBS installed and fully configured
 #### Hardware:
 * Computer
 * Webcam
 
 ### First setup:
 1. Install the package
-2. Make a new folder on the Desktop
+2. Make a new folder on the Desktop called OFIF
 3. Put the eight PNG images and the face_landmarker.task file inside
 4. Open the Terminal
-5. Navigate to your folder
-6. Open OSoFaTraBImISoFaCROLVARP by typing its name into the terminal
+5. Navigate to your folder by typing the command `cd Desktop/OFIF` and pressing enter
+6. Run OSoFaTraBImISoFaCROLVARP by typing its name into the terminal and pressing enter
 
-Now, all you're going to need to do is execute the AppImage file and calibrate the software. Calibration usually takes less than a minute and only has to be done once.
+Now, if you've done everything correctly, you should see a live camera feed and a window asking for calibration. You're just going to have to calibrate the software. Calibration usually takes less than a minute and only has to be done once.
+
+If you want to run the software again after you installed it, repeat steps 4 to 6.
 ## Different problems that might arise and how to fix them
 ### Program closes quickly before being opened
 The most common cause is that no camera is plugged in, recognized, or matches the stream index
