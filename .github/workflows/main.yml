@@ -1,0 +1,37 @@
+name: build-macos-executables
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          pip install pyinstaller opencv-python mediapipe pyvirtualcam
+
+      - name: Build binary
+        run: |
+          pyinstaller --onefile main.py --distpath dist/${{ matrix.arch }}
+
+      - name: Ad-hoc sign executable
+        run: |
+          codesign --force --options runtime --timestamp --sign - dist/${{ matrix.arch }}/main
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ matrix.arch }}-binary
+          path: dist/${{ matrix.arch }}/main
